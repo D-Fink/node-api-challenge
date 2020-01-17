@@ -3,14 +3,16 @@ const express = require('express');
 const router = express.Router();
 
 const actionsHub = require('../data/helpers/actionModel.js');
+const projectHub = require('../projects/projectsRouter.js');
 
 router.post('/', (req, res) => {
-    console.log(req.body)
-    if(req.body.description === '' || req.body.notes === ''){
-        return res.status(400).json({message: 'please include a description and notes'})
+    console.log(projectHub.get(req.params))
+    if(req.body.description === '' || req.body.notes === '' || !req.body.project_id){
+        return res.status(400).json({message: 'please include a description and notes and a project id'})
     }
     actionsHub.insert(req.body)
     .then(action => {
+        console.log(action)
         res.status(200).json(action)
     })
     .catch(err => {
@@ -60,7 +62,10 @@ router.delete('/:id', (req, res) => {
 })
 
 // function validateProjectId(req, res, next){
-//     projectHub.get()
+//     projectHub.get(req.params.id)
+//     .then(proj => {
+//         console.log(proj)
+//     })
 // }
 
 module.exports = router;
