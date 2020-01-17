@@ -6,7 +6,6 @@ const actionsHub = require('../data/helpers/actionModel.js');
 const projectHub = require('../projects/projectsRouter.js');
 
 router.post('/', (req, res) => {
-    console.log(projectHub.get(req.params))
     if(req.body.description === '' || req.body.notes === '' || !req.body.project_id){
         return res.status(400).json({message: 'please include a description and notes and a project id'})
     }
@@ -16,7 +15,7 @@ router.post('/', (req, res) => {
         res.status(200).json(action)
     })
     .catch(err => {
-        res.status(500).json({message: 'error adding action'})
+        res.status(500).json({message: 'error adding action or project id might not exist'})
     })
 })
 //ok
